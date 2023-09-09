@@ -3,7 +3,7 @@ import sentry_sdk
 
 sentry_sdk.init(
     dsn="https://49a1a41b45c948689562808601f5d48b@o1072423.ingest.sentry.io/4505851487715328",
-    integrations=[FlaskIntegration()],
+    integrations=[],
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.

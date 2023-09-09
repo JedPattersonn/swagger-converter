@@ -24,7 +24,7 @@ sentry_sdk.init(
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 KV_URL = config('KV_URL')
 KV_REST_API_URL = config('KV_REST_API_URL')
