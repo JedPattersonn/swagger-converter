@@ -24,12 +24,7 @@ sentry_sdk.init(
 
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/*": {
-        "origins": "*",  # This allows all origins. Consider restricting this.
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
+CORS(app)
 
 KV_URL = config('KV_URL')
 KV_REST_API_URL = config('KV_REST_API_URL')
@@ -57,8 +52,11 @@ def convert_swagger():
 
         redis_client.incr('conversion_count')
 
-        
-        return jsonify(v3_doc)
+        response = jsonify(v3_doc)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+
+        return response
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
