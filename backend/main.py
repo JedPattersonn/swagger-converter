@@ -49,22 +49,26 @@ cursor = connection.cursor()
 @app.route('/convert', methods=['POST'])
 @cross_origin()
 def convert_swagger():
-    v2_doc = request.get_json()
-    
-    if not v2_doc:
-        return jsonify({"error": "Invalid input, expected a JSON payload"}), 400
+    try:
+        v2_doc = request.get_json()
+        
+        if not v2_doc:
+            return jsonify({"error": "Invalid input, expected a JSON payload"}), 400
 
-    v2_doc_str = json.dumps(v2_doc)
-    v3_doc = Converter.main(v2_doc_str)
+        v2_doc_str = json.dumps(v2_doc)
+        v3_doc = Converter.main(v2_doc_str)
 
-    cursor.execute("UPDATE stats SET conversion_count = conversion_count + 1 WHERE id = 1;")
-    connection.commit()
+        cursor.execute("UPDATE stats SET conversion_count = conversion_count + 1 WHERE id = 1;")
+        connection.commit()
 
 
-    response = jsonify(v3_doc)
-    response.headers['Access-Control-Allow-Origin'] = '*'
+        response = jsonify(v3_doc)
+        response.headers['Access-Control-Allow-Origin'] = '*'
 
-    return response
+        return response
+    except Exception as e:
+        capture_exception(e)
+        return jsonify({"error": e}), 500
 
 
     
