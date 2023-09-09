@@ -63,7 +63,6 @@ def convert_swagger():
 
 
         response = jsonify(v3_doc)
-        response.headers['Access-Control-Allow-Origin'] = '*'
 
         return response
     except Exception as e:
