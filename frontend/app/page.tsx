@@ -22,16 +22,13 @@ export default function Home() {
 
   async function convertSwagger(currentInputJSON: string) {
     try {
-      const response = await fetch(
-        "https://swagger-converter-be.vercel.app/convert",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: currentInputJSON,
-        }
-      );
+      const response = await fetch("https://api.swaggerconverter.com/convert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: currentInputJSON,
+      });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
