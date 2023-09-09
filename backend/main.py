@@ -53,8 +53,7 @@ def convert_swagger():
         redis_client.incr('conversion_count')
 
         response = jsonify(v3_doc)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-
+        response.headers['Access-Control-Allow-Origin'] = '*'
 
         return response
 
