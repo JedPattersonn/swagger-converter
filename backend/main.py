@@ -4,18 +4,29 @@ from converter import Converter
 import json
 import redis
 from decouple import config
+from urllib.parse import urlparse
+
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",  # This allows all origins. Consider restricting this.
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 KV_URL = config('KV_URL')
 KV_REST_API_URL = config('KV_REST_API_URL')
 KV_REST_API_TOKEN = config('KV_REST_API_TOKEN')
 KV_REST_API_READ_ONLY_TOKEN = config('KV_REST_API_READ_ONLY_TOKEN')
 
-parsed_redis_url = redis.from_url(KV_URL)
-redis_client = redis.StrictRedis(host=parsed_redis_url.hostname, port=parsed_redis_url.port, password=parsed_redis_url.password, db=0, decode_responses=True)
+parsed_redis_url = urlparse(KV_URL)
+redis_client = redis.StrictRedis(host=parsed_redis_url.hostname, 
+                                 port=parsed_redis_url.port, 
+                                 password=parsed_redis_url.password, 
+                                 db=0, 
+                                 decode_responses=True)
 
 
 @app.route('/convert', methods=['POST'])
