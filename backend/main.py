@@ -5,7 +5,7 @@ import json
 import redis
 from decouple import config
 from urllib.parse import urlparse
-from sentry_sdk import capture_exception
+import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 sentry_sdk.init(
@@ -62,7 +62,6 @@ def convert_swagger():
         return response
 
     except Exception as e:
-        capture_exception(e)
         return jsonify({"error": str(e)}), 500
     
 @app.route('/stats', methods=['GET'])
