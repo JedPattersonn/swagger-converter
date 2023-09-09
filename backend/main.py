@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from converter import Converter
 import json
 import redis
@@ -26,6 +26,9 @@ sentry_sdk.init(
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
 KV_URL = config('KV_URL')
 KV_REST_API_URL = config('KV_REST_API_URL')
 KV_REST_API_TOKEN = config('KV_REST_API_TOKEN')
@@ -40,6 +43,7 @@ redis_client = redis.StrictRedis(host=parsed_redis_url.hostname,
 
 
 @app.route('/convert', methods=['POST'])
+@cross_origin()
 def convert_swagger():
     try:
         v2_doc = request.get_json()
